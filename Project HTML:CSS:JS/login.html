@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Trebuchet MS;
+            animation: fadeIn 1s ease-in;
+        }
+  
+        body {
+            background-color: #0f0f1a;
+            color: #ffffff;
+            padding-top: 80px;
+        }
+  
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: linear-gradient(to right, transparent, #370505, #0f0f1ae6);
+        }
+  
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+    
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        nav a:hover {
+            color: #ffffff;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e50914;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        nav .active a {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        nav .active a::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1a1a2e;
+            border-radius: 5px;
+            padding: 10px 0;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            color: #e0e0e0;
+            padding: 8px 20px;
+            display: block;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .dropdown-menu a:hover {
+            color: #fff;
+            background: rgba(229, 9, 20, 0.2);
+        }
+
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(15, 15, 26, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #e50914;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(30, 30, 45, 0.8);
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #e50914;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3);
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #e50914;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-login:hover {
+            background: #bf0811;
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #aaa;
+        }
+        
+        .signup-link a {
+            color: #e50914;
+            text-decoration: none;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .forgot-password a {
+            color: #e50914;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="movie.html">Home</a></li>
+                <li><a href="#movies">Movies</a></li>
+                <li><a href="#tvshows">TV Shows</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Genres</span> <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="#action">Action</a>
+                        <a href="#Biography">Biography</a>
+                        <a href="#fantasy">Fantasy</a>
+                        <a href="#documentary">Documentary</a>
+                    </div>
+                </li>
+                <li><a href="#newreeases">New Releases</a></li>
+                <li class="active"><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <h1 class="login-title">Welcome Back</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" required placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required placeholder="Enter your password">
+                </div>
+                
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="forgot-password.html">Forgot password?</a>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-login">Log In</button>
+                
+                <div class="signup-link">
+                    Don't have an account? <a href="signupmov.html">Sign up</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        //JS PER LOG-IN
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('login-form');
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('remember').checked;
+                
+                console.log('Login data:', { email, password, rememberMe });
+                
+                alert('Login successful! Redirecting to homepage...');
+                window.location.href = 'movie.html';
+            });
+            
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.dropdown > a').forEach(trigger => {
+                    trigger.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const dropdown = trigger.parentElement;
+                        dropdown.classList.toggle('active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
